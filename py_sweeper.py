@@ -76,17 +76,17 @@ def write_to_file(text, outfile):
 
 def main():
     subnet = argv[1]
-    fname = argv[2]
-
+    #fname = argv[2]
+    ping_sweep(subnet)
     # no values given, will ping sweep current subnet
-    if len(argv) == 1:
-        ping_sweep()
+    #if len(argv) == 0:
+    #    ping_sweep()
     # no filename given. will ping sweep given subnet
-    elif len(argv) == 2:
-        ping_sweep(subnet)
-   # will  
-    elif len(argv) == 3:
-        ping_sweep(subnet, fname) 
+    #elif len(argv) == 1:
+    #    ping_sweep(subnet)
+    #will  
+    #elif len(argv) == 2:
+    #    ping_sweep(subnet, fname) 
 
 main()
 

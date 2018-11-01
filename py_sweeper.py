@@ -8,7 +8,7 @@ from subprocess import check_output
 from colorama import Fore, Style
 
 
-csv_file = 'sweep' + datetime.now().strftime('%d_%b_%y') + '.csv'
+csv_file = 'sweep' + datetime.now().strftime('_%d_%b_%y') + '.csv'
 
 def get_current_ip():
     ip_addr = check_output('hostname -I',shell=True).decode('utf-8')
@@ -69,15 +69,30 @@ def ping_sweep( ip_addr = get_current_ip(), outfile=csv_file ):
             print(Fore.RED + host + Style.RESET_ALL + ' no reply')
             continue
     return
+def ping(host):
+    ping_timeout = .5
+    conf.verb = 0
+    pkt = IP(dst = host, ttl=20)  / ICMP()
+    rpl = sr1(pkt, timeout = ping_timeout)
+    if not (rpl is None):
+        print(Fore.GREEN + host  + Style.RESET_ALL + ' replied')
+        text = str(rpl.dst) + '/t'  + str(datetime.now)
+        write_to_file(text, outfile)
+    else:
+        print(Fore.RED + host + Style.RESET_ALL + ' no reply')
+
+    return
+
 
 def write_to_file(text, outfile):
     with open(outfile, 'a+') as f:
         f.write(text)
 
 def main():
-    subnet = argv[1]
+    #subnet = argv[1]
     #fname = argv[2]
-    ping_sweep(subnet)
+    #ping_sweep(subnet)
+    ping('192.168.0.1')
     # no values given, will ping sweep current subnet
     #if len(argv) == 0:
     #    ping_sweep()
@@ -88,6 +103,6 @@ def main():
     #elif len(argv) == 2:
     #    ping_sweep(subnet, fname) 
 
-main()
+#main()
 
 

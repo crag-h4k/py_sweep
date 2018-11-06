@@ -74,14 +74,20 @@ def ping(host):
     conf.verb = 0
     pkt = IP(dst = host, ttl=20)  / ICMP()
     rpl = sr1(pkt, timeout = ping_timeout)
-    if not (rpl is None):
-        print(Fore.GREEN + host  + Style.RESET_ALL + ' replied')
-        text = str(rpl.dst) + '/t'  + str(datetime.now)
-        write_to_file(text, outfile)
-    else:
-        print(Fore.RED + host + Style.RESET_ALL + ' no reply')
+    try:
+        if not (rpl is None):
+            print(Fore.GREEN + rpl.src  + Style.RESET_ALL + ' replied')
+            text = str(rpl.src) + '\t'  + str(datetime.now()) + '\n'
+            print(Fore.GREEN + text)
+            return text
+            #write_to_file(text, outfile)
+        else:
+            print(Fore.RED + host + Style.RESET_ALL + ' no reply')
+            return
+    except:
 
-    return
+            print(Fore.BLUE + host + Style.RESET_ALL + ' no reply')
+            return
 
 
 def write_to_file(text, outfile):
@@ -105,4 +111,5 @@ def main():
 
 #main()
 
+ping('192.168.230.115')
 

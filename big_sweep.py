@@ -4,6 +4,9 @@ from datetime import datetime
 from colorama import Fore, Style
 from geoip import geolite2
 
+from py_sweep import ping
+
+
 def write_to_file(text, outfile):
     with open(outfile, 'a+') as f:
         f.write(text)
@@ -45,7 +48,6 @@ def system_ping(ip_addr):
                 print(Fore.RED + ip_addr + Style.RESET_ALL + ' no reply')
                 return ip_addr + ' no_reply ' + str(datetime.now()) + '\n'
 
-
 def locate_ip(ip_addr):
 
         geoinfo = geolite2.lookup(ip_addr)
@@ -53,7 +55,7 @@ def locate_ip(ip_addr):
             print(geoinfo)
             return geoinfo
         else:
-            return
+            return 'geoip info not found'
 
 def lots_of_pings(start, end, outfile, public = True):
     s0, s1, s2, s3 = digitize_ip(start)
@@ -80,13 +82,14 @@ def lots_of_pings(start, end, outfile, public = True):
                     if ( l in s3_reserved ):
                         continue
                     s[3] = l
-                    host  = system_ping(rebuild_ip(s))
+                    #host  = system_ping(rebuild_ip(s))
+                    host  = ping(rebuild_ip(s))
                     #x  = rebuild_ip(s)
                     write_to_file(host , outfile)
 
 sip = '1.0.0.0'
-eip = '1.0.2.255'
-#eip = '249.255.255.255'
+#eip = '1.0.2.255'
+eip = '249.255.255.255'
 outfile = './scans/big_sweep' + datetime.now().strftime('_%d_%b_%y') + '.txt'
 lots_of_pings(sip, eip, outfile)
 #locate_ip('128.187.48.247')

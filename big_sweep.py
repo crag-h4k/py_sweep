@@ -4,7 +4,7 @@ from datetime import datetime
 from colorama import Fore, Style
 from geoip import geolite2
 
-from py_sweep import ping
+from py_sweeper import ping
 
 
 def write_to_file(text, outfile):
@@ -87,9 +87,9 @@ def lots_of_pings(start, end, outfile, public = True):
                     #x  = rebuild_ip(s)
                     write_to_file(host , outfile)
 
-sip = '1.0.0.0'
+sip = '192.168.1.0'
+eip = '192.168.255.255'
 #eip = '1.0.2.255'
-eip = '249.255.255.255'
 outfile = './scans/big_sweep' + datetime.now().strftime('_%d_%b_%y') + '.txt'
 lots_of_pings(sip, eip, outfile)
 #locate_ip('128.187.48.247')
